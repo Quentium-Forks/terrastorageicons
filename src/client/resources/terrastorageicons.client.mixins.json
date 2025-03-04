@@ -1,14 +1,15 @@
 {
-  "required": true,
-  "package": "jakesmythuk.terrastorageicons.mixin.client",
-  "compatibilityLevel": "JAVA_17",
-  "client": [
-    "HandledScreenMixin",
-    "InventoryScreenMixin",
-    "StorageButtonCreatorMixin",
-    "StorageButtonWidgetMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-	}
+	"required": true,
+	"package": "jakesmythuk.terrastorageicons.mixin.client",
+	"compatibilityLevel": "JAVA_17",
+	"client": [
+		"HandledScreenMixin",
+		"InventoryScreenMixin",
+		"StorageButtonCreatorMixin",
+		"StorageButtonWidgetMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"refmap": "client-terrastorageicons-refmap.json"
 }
