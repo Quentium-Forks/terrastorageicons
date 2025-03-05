@@ -21,6 +21,7 @@ import static jakesmythuk.terrastorageicons.TerrastorageIcons.*;
 
 @Mixin(StorageButtonWidget.class)
 public abstract class StorageButtonWidgetMixin extends ButtonWidget implements IButton {
+    private int x = 0, y = 0;
     private int iconOffsetX = 0, iconOffsetY = 0;
     private float selectedFrame = 0;
     private boolean canBeTextified = true;
@@ -29,6 +30,8 @@ public abstract class StorageButtonWidgetMixin extends ButtonWidget implements I
                 ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY ? width : 16,
                 ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY ? height : 16,
                 message, onPress, narrationSupplier);
+        this.x = x;
+        this.y = y;
     }
 
     @Inject(at = @At("HEAD"), method = "renderButton", cancellable = true)
@@ -92,5 +95,13 @@ public abstract class StorageButtonWidgetMixin extends ButtonWidget implements I
 
     public void canBeTextified(boolean canBeTextified) {
         this.canBeTextified = canBeTextified;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
     }
 }
