@@ -1,9 +1,10 @@
 package jakesmythuk.terrastorageicons.mixin.client;
 
 import jakesmythuk.terrastorageicons.IButton;
-import me.timvinci.gui.widget.StorageButtonWidget;
-import me.timvinci.network.ClientNetworkHandler;
-import me.timvinci.util.StorageAction;
+import me.timvinci.terrastorage.gui.widget.StorageButtonWidget;
+import me.timvinci.terrastorage.network.ClientNetworkHandler;
+import me.timvinci.terrastorage.util.ButtonsStyle;
+import me.timvinci.terrastorage.util.StorageAction;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
@@ -39,7 +40,7 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
 
     @Inject(
             method = {"init"},
-            at = {@At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/InventoryScreen;setInitialFocus(Lnet/minecraft/client/gui/Element;)V", shift = At.Shift.AFTER)},
+            at = {@At("TAIL")},
             cancellable = true
     )
     public void onInit(CallbackInfo ci) {
@@ -48,9 +49,10 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
             int buttonY = this.height / 2 - 22;
             this.quickStackButton = new StorageButtonWidget(
                     buttonX, buttonY, 16, 16,
-                    Text.empty(), Tooltip.of(Text.translatable("terrastorage.button.tooltip.quick_stack_to_nearby")), (onPress) -> {
+                    Text.empty(), ButtonsStyle.DEFAULT, (onPress) -> {
                 ClientNetworkHandler.sendActionPacket(StorageAction.QUICK_STACK_TO_NEARBY);
             });
+            this.quickStackButton.setTooltip(Tooltip.of(Text.translatable("terrastorage.button.tooltip.quick_stack_to_nearby")));
             IButton quickStackIBtn = (IButton) this.quickStackButton;
             quickStackIBtn.setIconCoords(48, 16);
             quickStackIBtn.canBeTextified(false);
@@ -58,9 +60,10 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
             buttonX += 20;
             this.sortInventoryButton = new StorageButtonWidget(
                     buttonX, buttonY, 16, 16,
-                    Text.empty(), Tooltip.of(Text.translatable("terrastorage.button.tooltip.sort_inventory")), (onPress) -> {
-                ClientNetworkHandler.sendPlayerSortPacket();
+                    Text.empty(), ButtonsStyle.DEFAULT, (onPress) -> {
+                ClientNetworkHandler.sendSortPacket(true);
             });
+            this.sortInventoryButton.setTooltip(Tooltip.of(Text.translatable("terrastorage.button.tooltip.sort_inventory")));
             IButton sortInventoryIBtn = (IButton) this.sortInventoryButton;
             sortInventoryIBtn.setIconCoords(0, 16);
             sortInventoryIBtn.canBeTextified(false);
