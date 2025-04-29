@@ -102,3 +102,13 @@ publishing {
 		// retrieving dependencies.
 	}
 }
+
+tasks.named("remapJar") {
+	destinationDirectory = layout.buildDirectory.dir("libs/${project.minecraft_version}")
+	archiveFileName = "${project.archives_base_name}-${project.mod_version}+${project.minecraft_version}.jar"
+}
+
+tasks.named("remapSourcesJar") {
+	destinationDirectory = layout.buildDirectory.dir("libs/${project.minecraft_version}")
+	archiveFileName = "${project.archives_base_name}-${project.mod_version}+${project.minecraft_version}-sources.jar"
+}
