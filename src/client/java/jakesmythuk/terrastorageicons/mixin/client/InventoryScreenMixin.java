@@ -5,6 +5,7 @@ import me.timvinci.terrastorage.gui.widget.StorageButtonWidget;
 import me.timvinci.terrastorage.network.ClientNetworkHandler;
 import me.timvinci.terrastorage.util.ButtonsStyle;
 import me.timvinci.terrastorage.util.StorageAction;
+import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
@@ -76,11 +77,11 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
             method = {"init"},
             at = @At(
                     value = "NEW",
-                    target = "(IIIIIIILnet/minecraft/util/Identifier;Lnet/minecraft/client/gui/widget/ButtonWidget$PressAction;)Lnet/minecraft/client/gui/widget/TexturedButtonWidget;"
+                    target = "(IIIILnet/minecraft/client/gui/screen/ButtonTextures;Lnet/minecraft/client/gui/widget/ButtonWidget$PressAction;)Lnet/minecraft/client/gui/widget/TexturedButtonWidget;"
             )
     )
-    private TexturedButtonWidget modifyRecipeBookButtonPress(int x, int y, int width, int height, int u, int v, int hoveredVOffset, Identifier texture, ButtonWidget.PressAction pressAction) {
-        return new TexturedButtonWidget(x, y, width, height, u, v, hoveredVOffset, texture, modifiedRecipeBookButtonPress((button) -> {
+    private TexturedButtonWidget modifyRecipeBookButtonPress(int x, int y, int width, int height, ButtonTextures textures, ButtonWidget.PressAction pressAction) {
+        return new TexturedButtonWidget(x, y, width, height, textures, modifiedRecipeBookButtonPress((button) -> {
             this.recipeBook.toggleOpen();
             this.x = this.recipeBook.findLeftEdge(this.width, this.backgroundWidth);
             button.setPosition(this.x + 104, this.height / 2 - 22);
