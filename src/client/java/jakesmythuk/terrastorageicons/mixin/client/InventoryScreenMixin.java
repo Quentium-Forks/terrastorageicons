@@ -6,7 +6,7 @@ import me.timvinci.terrastorage.network.ClientNetworkHandler;
 import me.timvinci.terrastorage.util.ButtonsStyle;
 import me.timvinci.terrastorage.util.StorageAction;
 import net.minecraft.client.gui.screen.ButtonTextures;
-import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
 import net.minecraft.client.gui.tooltip.Tooltip;
@@ -27,7 +27,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = InventoryScreen.class, priority = 1001)
-public abstract class InventoryScreenMixin extends AbstractInventoryScreen<PlayerScreenHandler> {
+public abstract class InventoryScreenMixin extends HandledScreen<PlayerScreenHandler> {
     @Shadow @Final private RecipeBookWidget recipeBook;
     @Shadow private boolean mouseDown;
     @Unique
