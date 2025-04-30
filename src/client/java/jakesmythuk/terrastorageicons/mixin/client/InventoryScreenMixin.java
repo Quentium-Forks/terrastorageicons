@@ -6,8 +6,9 @@ import me.timvinci.terrastorage.network.ClientNetworkHandler;
 import me.timvinci.terrastorage.util.ButtonsStyle;
 import me.timvinci.terrastorage.util.StorageAction;
 import net.minecraft.client.gui.screen.ButtonTextures;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.client.gui.screen.ingame.RecipeBookScreen;
+import net.minecraft.client.gui.screen.recipebook.AbstractCraftingRecipeBookWidget;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -15,9 +16,6 @@ import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import org.objectweb.asm.Opcodes;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -27,16 +25,17 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = InventoryScreen.class, priority = 1001)
-public abstract class InventoryScreenMixin extends HandledScreen<PlayerScreenHandler> {
-    @Shadow @Final private RecipeBookWidget recipeBook;
+public abstract class InventoryScreenMixin extends RecipeBookScreen<PlayerScreenHandler> {
     @Shadow private boolean mouseDown;
     @Unique
     private StorageButtonWidget sortInventoryButton;
     @Unique
     private StorageButtonWidget quickStackButton;
+    @Unique
+    private RecipeBookWidget<?> recipeBook;
 
     public InventoryScreenMixin(PlayerScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
-        super(screenHandler, playerInventory, text);
+        super(screenHandler, new AbstractCraftingRecipeBookWidget(screenHandler), playerInventory, text);
     }
 
     @Inject(
@@ -51,7 +50,7 @@ public abstract class InventoryScreenMixin extends HandledScreen<PlayerScreenHan
             this.quickStackButton = new StorageButtonWidget(
                     buttonX, buttonY, 16, 16,
                     Text.empty(), ButtonsStyle.DEFAULT, (onPress) -> {
-                ClientNetworkHandler.sendActionPacket(StorageAction.QUICK_STACK_TO_NEARBY);
+                ClientNetworkHandler.sendActionPayload(StorageAction.QUICK_STACK_TO_NEARBY);
             });
             this.quickStackButton.setTooltip(Tooltip.of(Text.translatable("terrastorage.button.tooltip.quick_stack_to_nearby")));
             IButton quickStackIBtn = (IButton) this.quickStackButton;
@@ -62,7 +61,7 @@ public abstract class InventoryScreenMixin extends HandledScreen<PlayerScreenHan
             this.sortInventoryButton = new StorageButtonWidget(
                     buttonX, buttonY, 16, 16,
                     Text.empty(), ButtonsStyle.DEFAULT, (onPress) -> {
-                ClientNetworkHandler.sendSortPacket(true);
+                ClientNetworkHandler.sendSortPayload(true);
             });
             this.sortInventoryButton.setTooltip(Tooltip.of(Text.translatable("terrastorage.button.tooltip.sort_inventory")));
             IButton sortInventoryIBtn = (IButton) this.sortInventoryButton;
@@ -88,6 +87,7 @@ public abstract class InventoryScreenMixin extends HandledScreen<PlayerScreenHan
             this.mouseDown = true;
         }));
     }
+
     @Unique
     private ButtonWidget.PressAction modifiedRecipeBookButtonPress(ButtonWidget.PressAction original) {
         return this.client.player.isSpectator() ? original : (button) -> {

@@ -12,12 +12,9 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import static jakesmythuk.terrastorageicons.TerrastorageIcons.*;
 
 @Mixin(StorageButtonWidget.class)
 public abstract class StorageButtonWidgetMixin extends ButtonWidget implements IButton {
@@ -34,11 +31,11 @@ public abstract class StorageButtonWidgetMixin extends ButtonWidget implements I
     @Inject(at = @At("HEAD"), method = "renderWidget", cancellable = true)
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
-        context.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
+        // context.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
 
-        context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        // context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (canBeTextified && ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY){
             int i = this.hovered ? 16776960 : 16777215;
 
@@ -46,7 +43,7 @@ public abstract class StorageButtonWidgetMixin extends ButtonWidget implements I
         } else {
             TerrastorageIconsClient.renderButton(this, context, delta);
         }
-        context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        // context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         ci.cancel();
     }

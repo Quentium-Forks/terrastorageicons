@@ -41,14 +41,14 @@ public class TerrastorageIconsClient implements ClientModInitializer {
 			button.selectedFrame(0);
 
 		if (ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.DEFAULT) {
-			context.drawTexture(ICONS_TEXTURE,
+			context.drawTexture(null, ICONS_TEXTURE,
 					button.getX(), button.getY(),
 					16, 16,
 					button.iconOffsetX(), button.iconOffsetY() + (button.getIconY() - button.iconOffsetY()) * 2,
 					16, 16,
 					TEXTURE_WIDTH, TEXTURE_HEIGHT);
 		}
-		context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		// context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 
