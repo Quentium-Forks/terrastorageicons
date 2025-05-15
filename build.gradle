@@ -38,6 +38,10 @@ loom {
 
 }
 
+configurations {
+	nightConfigExtract
+}
+
 dependencies {
 	// To change the versions see the gradle.properties file
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -48,13 +52,19 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// NightConfig.
-	modImplementation "com.electronwill.night-config:core:${project.night_config_version}"
-	modImplementation "com.electronwill.night-config:toml:${project.night_config_version}"
-	include "com.electronwill.night-config:core:${project.night_config_version}"
-	include "com.electronwill.night-config:toml:${project.night_config_version}"
+	nightConfigExtract implementation("com.electronwill.night-config:core:${project.night_config_version}")
+	nightConfigExtract implementation("com.electronwill.night-config:toml:${project.night_config_version}")
 
 	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 	modImplementation("maven.modrinth:terrastorage:${project.terrastorage_version}")
+}
+
+tasks.register("extractNightConfig", Copy) {
+	from {
+		configurations.nightConfigExtract.collect { zipTree(it) }
+	}
+	into layout.buildDirectory.dir("nightconfig")
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 processResources {
@@ -80,8 +90,14 @@ java {
 }
 
 jar {
+	dependsOn("extractNightConfig")
+
+	from(layout.buildDirectory.dir("nightconfig")) {
+		into ""
+	}
+
 	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
+		rename { "${it}_${project.base.archivesName.get()}" }
 	}
 }
 
