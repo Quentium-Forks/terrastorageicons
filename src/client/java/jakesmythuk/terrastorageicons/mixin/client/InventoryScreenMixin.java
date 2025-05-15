@@ -51,7 +51,7 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
             this.quickStackButton = new StorageButtonWidget(
                     buttonX, buttonY, 16, 16,
                     Text.empty(), ButtonsStyle.DEFAULT, (onPress) -> {
-                ClientNetworkHandler.sendActionPacket(StorageAction.QUICK_STACK_TO_NEARBY);
+                ClientNetworkHandler.sendActionPayload(StorageAction.QUICK_STACK_TO_NEARBY);
             });
             this.quickStackButton.setTooltip(Tooltip.of(Text.translatable("terrastorage.button.tooltip.quick_stack_to_nearby")));
             IButton quickStackIBtn = (IButton) this.quickStackButton;
@@ -62,7 +62,7 @@ public abstract class InventoryScreenMixin extends AbstractInventoryScreen<Playe
             this.sortInventoryButton = new StorageButtonWidget(
                     buttonX, buttonY, 16, 16,
                     Text.empty(), ButtonsStyle.DEFAULT, (onPress) -> {
-                ClientNetworkHandler.sendSortPacket(true);
+                ClientNetworkHandler.sendSortPayload(true);
             });
             this.sortInventoryButton.setTooltip(Tooltip.of(Text.translatable("terrastorage.button.tooltip.sort_inventory")));
             IButton sortInventoryIBtn = (IButton) this.sortInventoryButton;
