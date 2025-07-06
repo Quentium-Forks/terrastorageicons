@@ -10,11 +10,11 @@ import me.timvinci.terrastorage.util.LocalizedTextProvider;
 import me.timvinci.terrastorage.util.StorageAction;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.ColorHelper;
@@ -42,7 +42,7 @@ public class TerrastorageIconsClient implements ClientModInitializer {
 		}
 
 		if (ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.DEFAULT) {
-			context.drawTexture(RenderLayer::getGuiTextured, ICONS_TEXTURE,
+			context.drawTexture(RenderPipelines.GUI_TEXTURED, ICONS_TEXTURE,
 					button.getX(), button.getY(),
 					button.iconOffsetX(), button.iconOffsetY() + (button.getIconY() - button.iconOffsetY()) * 2,
 					16, 16,

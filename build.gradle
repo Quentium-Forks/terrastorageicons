@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.10-SNAPSHOT'
+	id 'fabric-loom' version "${loom_version}"
 	id 'maven-publish'
 }
 
@@ -90,6 +90,8 @@ java {
 }
 
 jar {
+	inputs.property "archivesName", project.base.archivesName
+
 	dependsOn("extractNightConfig")
 
 	from(layout.buildDirectory.dir("nightconfig")) {
@@ -97,7 +99,7 @@ jar {
 	}
 
 	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}" }
+		rename { "${it}_${inputs.properties.archivesName}"}
 	}
 }
 
