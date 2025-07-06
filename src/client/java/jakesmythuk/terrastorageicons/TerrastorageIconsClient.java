@@ -4,7 +4,6 @@ import me.timvinci.terrastorage.config.ClientConfigManager;
 import me.timvinci.terrastorage.gui.TerrastorageOptionsScreen;
 import me.timvinci.terrastorage.gui.widget.StorageButtonCreator;
 import me.timvinci.terrastorage.gui.widget.StorageButtonWidget;
-import me.timvinci.terrastorage.network.ClientNetworkHandler;
 import me.timvinci.terrastorage.util.ButtonsPlacement;
 import me.timvinci.terrastorage.util.ButtonsStyle;
 import me.timvinci.terrastorage.util.LocalizedTextProvider;
@@ -13,10 +12,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
@@ -37,8 +34,9 @@ public class TerrastorageIconsClient implements ClientModInitializer {
 			button.selectedFrame(button.selectedFrame() + delta * 0.4f);
 			if (button.selectedFrame() >= 3)
 				button.selectedFrame(2);
-		} else
+		} else {
 			button.selectedFrame(0);
+		}
 
 		if (ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.DEFAULT) {
 			context.drawTexture(ICONS_TEXTURE,
@@ -72,8 +70,8 @@ public class TerrastorageIconsClient implements ClientModInitializer {
 					buttonPadding = 4;
 				}
 				int buttonX = ClientConfigManager.getInstance().getConfig().getButtonsPlacement() == ButtonsPlacement.RIGHT ? screen.x() + screen.backgroundWidth() + buttonPadding : screen.x() - (buttonWidth + buttonPadding);
-				int containerHeight = screen.backgroundHeight() - 94;
-				int buttonSectionHeight = buttonActions.length * buttonHeight + (buttonActions.length - 1) * buttonSpacing;
+				// int containerHeight = screen.backgroundHeight() - 94;
+				// int buttonSectionHeight = buttonActions.length * buttonHeight + (buttonActions.length - 1) * buttonSpacing;
 				int buttonY = screen.y();
 				StorageAction[] _buttonActions;
 				int optionsButtonY;
@@ -164,9 +162,7 @@ public class TerrastorageIconsClient implements ClientModInitializer {
 		storageButtonWidget.setTooltip(tooltipLoc);
 		return ((IButton) storageButtonWidget).setIconCoords(iconX, iconY);
 	}
-	private static StorageButtonWidget getButtonWidget(int x, int y, Text message, Tooltip tooltipLoc, ButtonWidget.PressAction action, int iconX, int iconY) {
-		return getButtonWidget(x, y, 16, 16, message, tooltipLoc, action, iconX, iconY);
-	}
+
 	private static StorageButtonWidget editButtonWidget(StorageButtonWidget widget, int iconX, int iconY) {
 		return ((IButton) widget).setIconCoords(iconX, iconY);
 	}
