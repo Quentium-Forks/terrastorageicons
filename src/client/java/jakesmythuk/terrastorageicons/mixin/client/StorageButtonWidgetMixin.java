@@ -1,6 +1,5 @@
 package jakesmythuk.terrastorageicons.mixin.client;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import jakesmythuk.terrastorageicons.IButton;
 import jakesmythuk.terrastorageicons.TerrastorageIconsClient;
 import me.timvinci.terrastorage.config.ClientConfigManager;
@@ -31,11 +30,7 @@ public abstract class StorageButtonWidgetMixin extends ButtonWidget implements I
     @Inject(at = @At("HEAD"), method = "renderWidget", cancellable = true)
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
-        context.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
-        RenderSystem.enableBlend();
-        RenderSystem.enableDepthTest();
 
-        context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (canBeTextified && ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY){
             int i = this.hovered ? 16776960 : 16777215;
 
@@ -43,7 +38,6 @@ public abstract class StorageButtonWidgetMixin extends ButtonWidget implements I
         } else {
             TerrastorageIconsClient.renderButton(this, context, delta);
         }
-        context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         ci.cancel();
     }

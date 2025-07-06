@@ -14,8 +14,11 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.ColorHelper;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -39,14 +42,14 @@ public class TerrastorageIconsClient implements ClientModInitializer {
 		}
 
 		if (ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.DEFAULT) {
-			context.drawTexture(ICONS_TEXTURE,
+			context.drawTexture(RenderLayer::getGuiTextured, ICONS_TEXTURE,
 					button.getX(), button.getY(),
-					16, 16,
 					button.iconOffsetX(), button.iconOffsetY() + (button.getIconY() - button.iconOffsetY()) * 2,
 					16, 16,
-					TEXTURE_WIDTH, TEXTURE_HEIGHT);
+					16, 16,
+					TEXTURE_WIDTH, TEXTURE_HEIGHT,
+					ColorHelper.getWhite(1.0F));
 		}
-		context.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 
