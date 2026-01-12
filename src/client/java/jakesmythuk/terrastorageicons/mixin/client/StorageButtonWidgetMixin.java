@@ -5,11 +5,8 @@ import jakesmythuk.terrastorageicons.TerrastorageIconsClient;
 import me.timvinci.terrastorage.config.ClientConfigManager;
 import me.timvinci.terrastorage.gui.widget.StorageButtonWidget;
 import me.timvinci.terrastorage.util.ButtonsStyle;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,7 +17,8 @@ public abstract class StorageButtonWidgetMixin extends ButtonWidget implements I
     private int iconOffsetX = 0, iconOffsetY = 0;
     private float selectedFrame = 0;
     private boolean canBeTextified = true;
-    protected StorageButtonWidgetMixin(int x, int y, int width, int height, Text message, PressAction onPress, NarrationSupplier narrationSupplier) {
+
+    protected StorageButtonWidgetMixin(int x, int y, int width, int height, net.minecraft.text.Text message, PressAction onPress, NarrationSupplier narrationSupplier) {
         super(x, y,
                 ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY ? width : 16,
                 ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY ? height : 16,
@@ -29,12 +27,8 @@ public abstract class StorageButtonWidgetMixin extends ButtonWidget implements I
 
     @Inject(at = @At("HEAD"), method = "renderWidget", cancellable = true)
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        MinecraftClient minecraftClient = MinecraftClient.getInstance();
-
-        if (canBeTextified && ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY){
-            int i = this.hovered ? 16776960 : 16777215;
-
-            this.drawMessage(context, minecraftClient.textRenderer, i | MathHelper.ceil(this.alpha * 255.0F) << 24);
+        if (canBeTextified && ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY) {
+            this.drawButton(context);
         } else {
             TerrastorageIconsClient.renderButton(this, context, delta);
         }
@@ -45,7 +39,7 @@ public abstract class StorageButtonWidgetMixin extends ButtonWidget implements I
     public StorageButtonWidget setIconCoords(int x, int y) {
         this.iconOffsetX = x;
         this.iconOffsetY = y;
-        return (StorageButtonWidget)(Object)this;
+        return (StorageButtonWidget) (Object) this;
     }
 
     public int getIconY() {
