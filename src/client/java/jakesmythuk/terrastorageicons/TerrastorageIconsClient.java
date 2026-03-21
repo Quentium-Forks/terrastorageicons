@@ -1,5 +1,6 @@
 package jakesmythuk.terrastorageicons;
 
+import jakesmythuk.terrastorageicons.mixin.client.StorageButtonWidgetInvoker;
 import me.timvinci.terrastorage.config.ClientConfigManager;
 import me.timvinci.terrastorage.gui.TerrastorageOptionsScreen;
 import me.timvinci.terrastorage.gui.widget.StorageButtonCreator;
@@ -114,7 +115,7 @@ public class TerrastorageIconsClient implements ClientModInitializer {
 
 					if (ClientConfigManager.getInstance().getConfig().getDisplayOptionsButton()) {
 						//optionsButtonY = screen.y() - 20;
-						StorageButtonWidget storageButtonWidget = new StorageButtonWidget(buttonX, buttonY, buttonWidth, buttonHeight,
+						StorageButtonWidget storageButtonWidget = StorageButtonWidgetInvoker.invokeInit(buttonX, buttonY, buttonWidth, buttonHeight,
 								Text.translatable("terrastorage.button.options"),
 								ButtonsStyle.DEFAULT, clickOptions(screen));
 						storageButtonWidget.setTooltip(Tooltip.of(Text.translatable("terrastorage.button.tooltip.options")));
@@ -157,7 +158,7 @@ public class TerrastorageIconsClient implements ClientModInitializer {
 	}
 
 	private static StorageButtonWidget getButtonWidget(int x, int y, int width, int height, Text message, Tooltip tooltipLoc, ButtonWidget.PressAction action, int iconX, int iconY) {
-		StorageButtonWidget storageButtonWidget = new StorageButtonWidget(x, y, width, height,
+		StorageButtonWidget storageButtonWidget = StorageButtonWidgetInvoker.invokeInit(x, y, width, height,
 				message,
 				ButtonsStyle.DEFAULT,
 				action

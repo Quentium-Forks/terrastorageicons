@@ -5,6 +5,7 @@
 	"client": [
 		"HandledScreenMixin",
 		"StorageButtonCreatorMixin",
+		"StorageButtonWidgetInvoker",
 		"StorageButtonWidgetMixin"
 	],
 	"injectors": {
