@@ -25,7 +25,7 @@ public abstract class StorageButtonWidgetMixin extends ButtonWidget implements I
                 message, onPress, narrationSupplier);
     }
 
-    @Inject(at = @At("HEAD"), method = "renderWidget", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "drawIcon", cancellable = true)
     private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (canBeTextified && ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY) {
             this.drawButton(context);
