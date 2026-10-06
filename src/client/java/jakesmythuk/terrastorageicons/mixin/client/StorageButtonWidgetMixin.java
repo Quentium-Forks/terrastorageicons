@@ -5,30 +5,30 @@ import jakesmythuk.terrastorageicons.TerrastorageIconsClient;
 import me.timvinci.terrastorage.config.ClientConfigManager;
 import me.timvinci.terrastorage.gui.widget.StorageButtonWidget;
 import me.timvinci.terrastorage.util.ButtonsStyle;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(StorageButtonWidget.class)
-public abstract class StorageButtonWidgetMixin extends ButtonWidget implements IButton {
+public abstract class StorageButtonWidgetMixin extends Button implements IButton {
     private int iconOffsetX = 0, iconOffsetY = 0;
     private float selectedFrame = 0;
     private boolean canBeTextified = true;
 
-    protected StorageButtonWidgetMixin(int x, int y, int width, int height, net.minecraft.text.Text message, PressAction onPress, NarrationSupplier narrationSupplier) {
+    protected StorageButtonWidgetMixin(int x, int y, int width, int height, net.minecraft.network.chat.Component message, OnPress onPress, CreateNarration narrationSupplier) {
         super(x, y,
                 ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY ? width : 16,
                 ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY ? height : 16,
                 message, onPress, narrationSupplier);
     }
 
-    @Inject(at = @At("HEAD"), method = "drawIcon", cancellable = true)
-    private void render(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Inject(at = @At("HEAD"), method = "renderContents", cancellable = true)
+    private void render(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (canBeTextified && ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY) {
-            this.drawButton(context);
+            this.renderDefaultSprite(context);
         } else {
             TerrastorageIconsClient.renderButton(this, context, delta);
         }
@@ -46,7 +46,7 @@ public abstract class StorageButtonWidgetMixin extends ButtonWidget implements I
         int i = 1;
         if (!this.active)
             i = 0;
-        else if (this.isSelected())
+        else if (this.isHoveredOrFocused())
             i = 2 + (int) selectedFrame;
         return iconOffsetY + i * 16;
     }

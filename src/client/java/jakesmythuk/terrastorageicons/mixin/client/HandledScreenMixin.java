@@ -2,79 +2,79 @@ package jakesmythuk.terrastorageicons.mixin.client;
 
 import jakesmythuk.terrastorageicons.IScreen;
 import jakesmythuk.terrastorageicons.TerrastorageIconsClient;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.MenuAccess;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = HandledScreen.class, priority = 2000)
-public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen implements ScreenHandlerProvider<T>, IScreen {
+@Mixin(value = AbstractContainerScreen.class, priority = 2000)
+public abstract class HandledScreenMixin<T extends AbstractContainerMenu> extends Screen implements MenuAccess<T>, IScreen {
 	@Shadow
-	protected int backgroundWidth;
+	protected int imageWidth;
 	@Shadow
-	protected int backgroundHeight;
+	protected int imageHeight;
 	@Shadow
-	protected int x;
+	protected int leftPos;
 	@Shadow
-	protected int y;
+	protected int topPos;
 
-	protected HandledScreenMixin(Text title) {
+	protected HandledScreenMixin(Component title) {
 		super(title);
 	}
 
 	@Inject(
 			method = "init",
-			at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/ingame/HandledScreen;y:I", shift = At.Shift.AFTER),
+			at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screens/inventory/AbstractContainerScreen;topPos:I", shift = At.Shift.AFTER),
 			cancellable = true
 	)
 	private void onInit(CallbackInfo ci) {
-		TerrastorageIconsClient.initScreen((HandledScreen<?>)(Object)this, this);
+		TerrastorageIconsClient.initScreen((AbstractContainerScreen<?>)(Object)this, this);
 		ci.cancel();
 	}
 
 	@Override
 	public int backgroundHeight() {
-		return backgroundHeight;
+		return imageHeight;
 	}
 
 	@Override
 	public int y() {
-		return y;
+		return topPos;
 	}
 
 	@Override
 	public int backgroundWidth() {
-		return backgroundWidth;
+		return imageWidth;
 	}
 
 	@Override
 	public int x() {
-		return x;
+		return leftPos;
 	}
 
 	@Override
-	public TextRenderer textRenderer() {
-		return textRenderer;
+	public Font textRenderer() {
+		return font;
 	}
 
 	@Override
-	public <T extends Element & Drawable & Selectable> T terrastorageIcons$addDrawableChild(T button) {
-		return addDrawableChild(button);
+	public <T extends GuiEventListener & Renderable & NarratableEntry> T terrastorageIcons$addDrawableChild(T button) {
+		return addRenderableWidget(button);
 	}
 
 	@Override
-	public MinecraftClient client() {
-		return client;
+	public Minecraft client() {
+		return minecraft;
 	}
 }

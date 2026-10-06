@@ -1,13 +1,12 @@
 package jakesmythuk.terrastorageicons;
 
 import net.fabricmc.api.ModInitializer;
-
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TerrastorageIcons implements ModInitializer {
-	public static final Identifier ICONS_TEXTURE = Identifier.of(TerrastorageIcons.MOD_ID, "textures/gui/inventory_sorting_icons.png");
+	public static final Identifier ICONS_TEXTURE = Identifier.fromNamespaceAndPath(TerrastorageIcons.MOD_ID, "textures/gui/inventory_sorting_icons.png");
 	public static final int TEXTURE_WIDTH = 64, TEXTURE_HEIGHT = 160;
 	public static final String MOD_ID = "terrastorageicons";
 
