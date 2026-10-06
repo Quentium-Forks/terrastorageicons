@@ -99,7 +99,7 @@ public class TerrastorageIconsClient implements ClientModInitializer {
 					}
 
 					if (ClientConfigManager.getInstance().getConfig().getDisplayOptionsButton()) {
-						int optionsButtonX = (screen.client().screen.width - 120) / 2;
+						int optionsButtonX = (screen.client().gui.screen().width - 120) / 2;
 						optionsButtonY = screen.y() - 20;
 						Button optionsButtonWidget = getButtonWidget(optionsButtonX, optionsButtonY, 120, 15,
 								Component.translatable("terrastorage.button.options"),
@@ -151,7 +151,7 @@ public class TerrastorageIconsClient implements ClientModInitializer {
 	private static Button.@NotNull OnPress clickOptions(IScreen screen) {
 		return (onPress) -> {
 			screen.client().execute(() -> {
-				screen.client().setScreen(new TerrastorageOptionsScreen(screen.client().screen));
+				screen.client().setScreenAndShow(new TerrastorageOptionsScreen(screen.client().gui.screen()));
 			});
 		};
 	}
