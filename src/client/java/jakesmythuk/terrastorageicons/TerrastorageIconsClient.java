@@ -11,7 +11,7 @@ import me.timvinci.terrastorage.util.LocalizedTextProvider;
 import me.timvinci.terrastorage.util.StorageAction;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -31,7 +31,7 @@ public class TerrastorageIconsClient implements ClientModInitializer {
 
 	}
 
-	public static void renderButton(IButton button, GuiGraphics context, float delta) {
+	public static void renderButton(IButton button, GuiGraphicsExtractor graphics, float delta) {
 		StorageButtonWidget widget = ((StorageButtonWidget)(Object)button);
 		if (widget.isHoveredOrFocused()) {
 			button.selectedFrame(button.selectedFrame() + delta * 0.4f);
@@ -42,7 +42,7 @@ public class TerrastorageIconsClient implements ClientModInitializer {
 		}
 
 		if (ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.DEFAULT) {
-			context.blit(RenderPipelines.GUI_TEXTURED, ICONS_TEXTURE,
+			graphics.blit(RenderPipelines.GUI_TEXTURED, ICONS_TEXTURE,
 					button.getX(), button.getY(),
 					button.iconOffsetX(), button.iconOffsetY() + (button.getIconY() - button.iconOffsetY()) * 2,
 					16, 16,

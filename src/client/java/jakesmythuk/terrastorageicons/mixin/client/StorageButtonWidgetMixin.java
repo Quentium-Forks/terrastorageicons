@@ -5,7 +5,7 @@ import jakesmythuk.terrastorageicons.TerrastorageIconsClient;
 import me.timvinci.terrastorage.config.ClientConfigManager;
 import me.timvinci.terrastorage.gui.widget.StorageButtonWidget;
 import me.timvinci.terrastorage.util.ButtonsStyle;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,12 +25,12 @@ public abstract class StorageButtonWidgetMixin extends Button implements IButton
                 message, onPress, narrationSupplier);
     }
 
-    @Inject(at = @At("HEAD"), method = "renderContents", cancellable = true)
-    private void render(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Inject(at = @At("HEAD"), method = "extractContents", cancellable = true)
+    private void render(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (canBeTextified && ClientConfigManager.getInstance().getConfig().getButtonsStyle() == ButtonsStyle.TEXT_ONLY) {
-            this.renderDefaultSprite(context);
+            this.extractDefaultSprite(graphics);
         } else {
-            TerrastorageIconsClient.renderButton(this, context, delta);
+            TerrastorageIconsClient.renderButton(this, graphics, delta);
         }
 
         ci.cancel();
